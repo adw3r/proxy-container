@@ -1,0 +1,22 @@
+version: "3"
+services:
+  ovpn_proxy:
+    image: andymeful/privoxy-openvpn
+    #build: .
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    # cloudflare DNS
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
+    volumes:
+      - ./openvpn-config:/app/ovpn/config
+    environment:
+      - OPENVPN_FILENAME=Germany_freeopenvpn_udp.ovpn
+      - LOCAL_NETWORK=10.107.8.10/24
+      - ONLINECHECK_DELAY=900
+    ports:
+      - 8080:8080
+    restart: always
